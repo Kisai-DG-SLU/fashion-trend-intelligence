@@ -1,108 +1,75 @@
-# environnement_poetry.md
+# Projet\_et\_structure\_initiale
 
-## 1. Pourquoi Poetry ?
-- **Gestion intelligente des dépendances**  
-  Évite le “dependency hell” en résolvant automatiquement les sous-dépendances.  
-- **Environnements isolés**  
-  Crée un venv par projet, sans polluer le Python global.  
-- **PEP 621 & TOML**  
-  Fichier `pyproject.toml` clair et standard pour toutes les métadonnées.
+Ce document retrace à la fois l'**historique** des choix initiaux pour configurer l’environnement Poetry et la structure du projet **Fashion Trend Intelligence**, ainsi que la **structure finale** retenue pour organiser le code, les données, les notebooks et la documentation.
 
 ---
 
-## 2. Initialisation du projet
+## 1. Installation et initialisation avec Poetry
+
+### 1.1 Pourquoi Poetry ?
+
+- **Gestion intelligente des dépendances** : évite le « dependency hell » en résolvant automatiquement les sous-dépendances.
+- **Environnement isolé** : chaque projet dispose d’un virtualenv dédié, sans interférence avec le système.
+- **Format TOML & PEP 621** : `pyproject.toml` standard pour définir métadonnées et dépendances.
+
+### 1.2 Initialisation du projet
 
 ```bash
-# 1. Créer et entrer dans le dossier
-mkdir fashion-trend-intelligence && cd fashion-trend-intelligence
-
-# 2. Installer Poetry (via pipx)
+# Installer Poetry (via pipx)
 pip install pipx
 python3 -m pipx ensurepath
 pipx install poetry
 
-# 3. Initialiser pyproject.toml minimal
+# Initialiser le fichier pyproject.toml
 poetry init --no-interaction
 
-# 4. Activer venv local dans .venv/
+# Configurer l'environnement virtuel dans le projet
 poetry config virtualenvs.in-project true
 ```
 
-> **Raison** : projet propre, reproductible, facile à partager.
+> **Note** : ensuite, `poetry install` installe les dépendances et `poetry shell` active l’environnement.
 
----
+### 1.3 Dépendances d'exécution (runtime)
 
-## 3. Dépendances d’exécution (runtime)
+Ajouter les bibliothèques nécessaires pour le fonctionnement principal :
 
-```bash
-poetry add   requests        # appels HTTP vers HF Inference API  
-  pillow          # chargement et pré-traitement d’images  
-  numpy           # calculs numériques  
-  matplotlib      # visualisations  
-  pycocotools     # décodage RLE (COCO masks)  
-  python-dotenv   # variables d’environnement (.env)  
-  transformers    # inférence locale SegFormer  
-  torch           # backend PyTorch pour transformers  
-  huggingface-hub # client Inference Providers HF  
-```
-
-> **Pourquoi ces choix** :  
-> - **requests** pour communiquer avec HF  
-> - **Pillow/Numpy/Matplotlib** pour charger, traiter et afficher les images  
-> - **pycocotools** pour décoder les masques au format RLE  
-> - **transformers/torch** pour inférence locale (optionnel)  
-> - **huggingface-hub** pour un accès serverless unifié
-
----
-
-## 4. Dépendances de développement (dev)
+- **requests** : envoyer des requêtes HTTP à l’API Hugging Face.
+- **python-dotenv** : chargement des variables d’environnement depuis `.env`.
+- **huggingface-hub** : client d’inférence serverless pour le modèle SegFormer.
+- **transformers**, **torch** : support d’inférence locale et traitement des tenseurs.
+- **Pillow** : lecture et manipulation d’images.
+- **NumPy** : calculs numériques sur les masques de segmentation.
+- **Matplotlib** : création de visualisations et superposition de masques.
+- **pycocotools** : calcul de métriques précises (IoU, Dice) sur des masques.
 
 ```bash
-poetry add --group dev   jupyterlab   # notebooks interactifs  
-  ipykernel    # kernel Python dans Jupyter  
-  pytest       # tests unitaires  
-  flake8       # linting  
-  black        # formatage automatique  
-  pre-commit   # hooks Git  
+poetry add \
+  requests python-dotenv huggingface-hub transformers torch \
+  Pillow numpy matplotlib pycocotools
 ```
 
-> **Pourquoi ces outils** :  
-> - Garantir un code propre et testé.  
-> - Faciliter la collaboration (hooks, notebooks partagés).
+### 1.4 Dépendances de développement (dev)
 
----
+Installer les outils pour prototypage, tests et qualité de code :
 
-## 5. Structure du projet
+- **jupyterlab**, **ipykernel** : environnements notebook interactifs.
+- **pytest** : exécution des tests unitaires.
+- **flake8** : linting pour garantir la conformité PEP 8.
+- **black** : formatage automatique du code.
+- **pre-commit** : hooks Git pour lancer lint et format avant chaque commit.
 
-```
-fashion-trend-intelligence/
-├── .venv/                       
-├── pyproject.toml               
-├── poetry.lock                 
-├── README.md  
-├── .gitignore  
-└── src/
-    └── fashion_trend_intelligence/
-        ├── __init__.py  
-        ├── segmentation.py  
-        ├── cost_estimator.py  
-        └── visualization.py  
+```bash
+poetry add --group dev \
+  jupyterlab ipykernel pytest flake8 black pre-commit
 ```
 
-- **src/** : code packagé  
-- **.gitignore** : ignore `.venv/`, `.env`, `__pycache__/`, etc.
+### 1.5 Packaging et entrypoints
 
----
-
-## 6. Packaging & entrypoints
-
-Dans `pyproject.toml` :
+Déclaration des packages et scripts pour usage CLI. Cela **permettra** de lancer facilement les fonctionnalités :
 
 ```toml
 [tool.poetry]
-packages = [
-  { include = "fashion_trend_intelligence", from = "src" }
-]
+packages = [ { include = "fashion_trend_intelligence", from = "src" } ]
 
 [tool.poetry.scripts]
 segment       = "fashion_trend_intelligence.segmentation:main"
@@ -110,35 +77,75 @@ evaluate_cost = "fashion_trend_intelligence.cost_estimator:main"
 viz           = "fashion_trend_intelligence.visualization:main"
 ```
 
-- **Entrypoints** : commandes CLI `poetry run segment …`  
-- **Packaging** : `poetry build` → `.whl` partageable
+> **À venir** : implémentation des scripts et tests d’intégration CI.
 
 ---
 
-## 7. Installation & vérification
+## 2. Architecture et structure finale du projet
 
-```bash
-# Installer tout (runtime + dev + code)
-poetry install
-
-# Entrer dans l’environnement isolé
-poetry shell
-
-# Vérifier l’import du package
-python - << 'EOF'
-import fashion_trend_intelligence
-print("OK :", fashion_trend_intelligence.__file__)
-EOF
-
-# Tester un entrypoint
-poetry run segment --help
+```
+fashion-trend-intelligence/
+├── LICENSE
+├── README.md                    # Présentation du projet et instructions de démarrage
+├── .gitignore                   # Fichiers et dossiers ignorés par Git
+├── .env.example                 # Modèle de configuration des variables d'environnement
+├── pyproject.toml               # Configuration Poetry et metadata du projet
+├── poetry.lock                  # Verrou des versions des dépendances
+│
+├── docs/                        # Documentation et supports
+│   ├── project_structure.md     # Historique et guide initial de la structure
+│   ├── fiche_auto_evaluation.pdf
+│   └── support_presentation_ModeTrends.pptx
+│
+├── data/                        # Données du projet
+│   ├── raw/                     # Données brutes immuables
+│   │   ├── images/              # Photos d’influenceurs
+│   │   └── annotations/         # Masks (annotations ground-truth)
+│   └── processed/               # Données transformées (à générer via scripts)
+│
+├── notebooks/                   # Notebooks Jupyter pour chaque étape
+│   ├── 00-setup-environnement.ipynb       # Validation de l'environnement et .env
+│   ├── 01-viz-exemple.ipynb              # Visualisation d'exemple de masks
+│   ├── 02-test-inference.ipynb           # Appel au modèle SegFormer
+│   ├── 03-evaluation-metrics.ipynb       # Calcul IoU, Dice, F1
+│   └── 04-visualisation-resultats.ipynb  # Figures finales et synthèse
+│
+├── src/                         # Code source du package réutilisable
+│   └── fashion_trend_intelligence/
+│       ├── __init__.py
+│       ├── segmentation.py      # Appelle le modèle et génère les masks
+│       ├── cost_estimator.py    # Estime le coût d’inférence pour un volume d’images
+│       ├── visualization.py     # Génère et sauvegarde les visuels de segmentation
+│       └── config.py            # Chargement centralisé des variables d'environnement
+│
+├── tests/                       # Tests unitaires pour chaque module
+│   ├── test_segmentation.py
+│   ├── test_cost_estimator.py
+│   └── test_visualization.py
+│
+└── .github/                     # Configuration GitHub Actions
+    └── workflows/
+        └── ci.yml              # CI: macos-latest, Python 3.13.2, Poetry, Black, flake8, pytest
 ```
 
-> Tu es maintenant prêt·e pour :  
-> - tester le token HF  
-> - appeler et évaluer SegFormer-clothes  
-> - calculer métriques & coûts  
-> - préparer notebooks et slides pour ton mentor.
+### 2.1 Détail des choix et usages
+
+- `` : centralise toute la documentation hors code, facilite la revue et l’accès aux supports.
+- `` vs `` : préserve les données originales et trace les transformations.
+- `` : jalons pédagogiques et prototypage rapide avant industrialisation du code.
+- `` : implémente une API Python stable, prête à être packagée et réutilisée en CLI ou intégration.
+- `` : valident automatiquement les fonctions clés et garantissent la qualité du code (TDD).
+- **CLI scripts (entrypoints)** : fournissent une interface simple pour lancer segmentation, estimation de coût et visualisation.
+- **CI** : assure la conformité du code (format, lint), la validité des tests et l’installation isolée via Poetry.
+
+### 2.2 Choix SMART
+
+- **Spécifique** : répartition claire des responsabilités entre dossiers et modules.
+- **Mesurable** : indicateurs automatisés via tests, lint et CI.
+- **Atteignable** : placeholders et templates créés, scripts à implémenter.
+- **Réalisable** : technologies standard (Poetry, Hugging Face, pytest).
+- **Temporel** : progression notebook par notebook pour décomposer le travail.
 
 ---
-*Notes rédigées par Damien G.*  
+
+Ce document permettra à mon mentor de comprendre l’historique des choix, l’architecture cible et la feuille de route pour la suite du projet.
