@@ -1,0 +1,4 @@
+# Fichier .github/CODEOWNERS
+
+# Tout le code nécessite l’approbation de Damien
+* @damienguesdon
