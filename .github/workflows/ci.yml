@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    steps:
+      # 1) Checkout du code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2) Installation de Python 3.13.2
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13.2'
+
+      # 3) Installation de Poetry
+      - name: Install Poetry
+        run: pip install poetry
+
+      # 4) Installation des dépendances
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      # 5) Vérification du formatage avec Black
+      - name: Check formatting with Black
+        run: poetry run black --check src/fashion_trend_intelligence tests
+
+      # 6) Lint du code avec flake8
+      - name: Lint with flake8
+        run: poetry run flake8 src/fashion_trend_intelligence tests
+
+      # 7) Exécution des tests Pytest
+      - name: Run pytest
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: poetry run pytest tests --maxfail=1 --disable-warnings -q
