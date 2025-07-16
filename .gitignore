@@ -3,3 +3,25 @@ __pycache__/
 *.pyc
 .env
 .pytest_cache/
+
+# === projet Fashion Trend Intelligence ===
+# secrets
+.env
+
+# virtualenv
+.venv/
+
+# caches et outputs
+__pycache__/
+.pytest_cache/
+
+# données brutes et traitées (optionnel si dataset volumineux)
+data/processed/
+# si tu ne veux pas versionner raw :
+# data/raw/
+
+# Jupyter checkpoints
+**/.ipynb_checkpoints/
+
+# docs temporaires
+docs/*.html
