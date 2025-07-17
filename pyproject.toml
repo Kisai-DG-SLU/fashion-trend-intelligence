@@ -1,29 +1,24 @@
 [project]
 name = "fashion-trend-intelligence"
 version = "0.1.0"
-description = ""
+description = "segmentation de photos pour identifier vetements"
 authors = [
-    {name = "Damien GUESDON",email = "kisai.dg.slu@gmail.com"}
+    {name = "Damien GUESDON", email = "kisai.dg.slu@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11,<3.13"
 
-dependencies = [
-  "requests",
-  "python-dotenv",
-  "huggingface-hub",
-  "transformers",
-  "torch",
-  "Pillow",
-  "numpy",
-  "matplotlib",
-  "pycocotools"
-]
-
-[tool.poetry]
-packages = [
-  { include = "fashion_trend_intelligence", from = "src" }
-]
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+requests = "^2.32"
+python-dotenv = "^1.0"
+huggingface-hub = "^0.27"
+transformers = "^4.30"
+Pillow = "^11.0"
+numpy = "^1.24"
+matplotlib = "^3.8"
+pycocotools = "^2.0"
+torch = "2.2.2"
 
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.4.4"
@@ -34,5 +29,5 @@ black      = "^25.1.0"
 pre-commit = "^4.2.0"
 
 [build-system]
-requires    = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

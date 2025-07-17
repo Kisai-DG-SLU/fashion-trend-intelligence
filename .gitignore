@@ -15,8 +15,12 @@ __pycache__/
 __pycache__/
 .pytest_cache/
 
+# fichiers Mac :
+.DS_Store
+**/.DS_Store
+
 # données brutes et traitées (optionnel si dataset volumineux)
-data/processed/
+# data/processed/
 # si tu ne veux pas versionner raw :
 # data/raw/
 
