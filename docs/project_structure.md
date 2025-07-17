@@ -116,7 +116,8 @@ fashion-trend-intelligence/
 │       ├── segmentation.py      # Appelle le modèle et génère les masks
 │       ├── cost_estimation.py   # Estime le coût d’inférence pour un volume d’images
 │       ├── visualization.py     # Génère et sauvegarde les visuels de segmentation
-│       └── config.py            # Chargement centralisé des variables d'environnement 
+│       ├── config.py            # Variables centralisées du Projet
+│       └── utils.py             # Fonctions (chargement des variables d'environnement)
 │
 ├── tests/                       # Tests unitaires pour chaque module
 │   ├── test_segmentation.py
