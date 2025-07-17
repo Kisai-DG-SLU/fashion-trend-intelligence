@@ -104,48 +104,49 @@ fashion-trend-intelligence/
 │   └── processed/               # Données transformées (à générer via scripts)
 │
 ├── notebooks/                   # Notebooks Jupyter pour chaque étape
-│   ├── 00-setup-environnement.ipynb       # Validation de l'environnement et .env
-│   ├── 01-viz-exemple.ipynb              # Visualisation d'exemple de masks
-│   ├── 02-test-inference.ipynb           # Appel au modèle SegFormer
-│   ├── 03-evaluation-metrics.ipynb       # Calcul IoU, Dice, F1
-│   └── 04-visualisation-resultats.ipynb  # Figures finales et synthèse
+│   ├── 00-viz-example.ipynb             # exemple de visualisation
+│   ├── 01_setup_env.ipynb               # configuration & test du token HF
+│   ├── 02_segmentation.ipynb            # appel API & calcul de métriques
+│   ├── 03_cost_estimation.ipynb         # estimation du coût HF
+│   └── 04_visualisation.ipynb           # visuels et analyses graphiques
 │
-├── src/                         # Code source du package réutilisable
+├── src/                         # Code source du package réutilisable 
 │   └── fashion_trend_intelligence/
 │       ├── __init__.py
 │       ├── segmentation.py      # Appelle le modèle et génère les masks
-│       ├── cost_estimator.py    # Estime le coût d’inférence pour un volume d’images
+│       ├── cost_estimation.py   # Estime le coût d’inférence pour un volume d’images
 │       ├── visualization.py     # Génère et sauvegarde les visuels de segmentation
-│       └── config.py            # Chargement centralisé des variables d'environnement
+│       └── config.py            # Chargement centralisé des variables d'environnement 
 │
 ├── tests/                       # Tests unitaires pour chaque module
 │   ├── test_segmentation.py
-│   ├── test_cost_estimator.py
+│   ├── test_cost_estimation.py
 │   └── test_visualization.py
 │
 └── .github/                     # Configuration GitHub Actions
     └── workflows/
-        └── ci.yml              # CI: macos-latest, Python 3.13.2, Poetry, Black, flake8, pytest
+        └── ci.yml               # CI: macos-latest, Python 3.13.2, Poetry, Black, flake8, pytest
 ```
 
 ### 2.1 Détail des choix et usages
 
-- `` : centralise toute la documentation hors code, facilite la revue et l’accès aux supports.
-- `` vs `` : préserve les données originales et trace les transformations.
-- `` : jalons pédagogiques et prototypage rapide avant industrialisation du code.
-- `` : implémente une API Python stable, prête à être packagée et réutilisée en CLI ou intégration.
-- `` : valident automatiquement les fonctions clés et garantissent la qualité du code (TDD).
-- **CLI scripts (entrypoints)** : fournissent une interface simple pour lancer segmentation, estimation de coût et visualisation.
-- **CI** : assure la conformité du code (format, lint), la validité des tests et l’installation isolée via Poetry.
+- **docs/** : centralise toute la documentation hors code et facilite la revue.
+- **data/raw** vs **data/processed** : préserve les données originales et trace les transformations.
+- **notebooks/** : jalons pédagogiques et prototypage rapide avant industrialisation du code.
+- **src/** : API Python stable, prête à être packagée et réutilisée via CLI ou intégration.
+- **tests/** : valident les fonctions clés et garantissent la qualité du code (TDD).
+- **CLI scripts (entrypoints)** : interface simple pour lancer segmentation, estimation de coût et visualisation.
+- **CI** : assure la conformité du code (lint, format), la validité des tests et l’installation isolée via Poetry.
 
 ### 2.2 Choix SMART
 
-- **Spécifique** : répartition claire des responsabilités entre dossiers et modules.
-- **Mesurable** : indicateurs automatisés via tests, lint et CI.
-- **Atteignable** : placeholders et templates créés, scripts à implémenter.
-- **Réalisable** : technologies standard (Poetry, Hugging Face, pytest).
-- **Temporel** : progression notebook par notebook pour décomposer le travail.
+- **Spécifique** : répartition claire des responsabilités entre dossiers et modules.
+- **Mesurable** : indicateurs automatisés via tests, lint et CI.
+- **Atteignable** : placeholders et templates créés, scripts à implémenter.
+- **Réalisable** : technologies standard (Poetry, Hugging Face, pytest).
+- **Temporel** : progression notebook par notebook pour décomposer le travail.
 
 ---
 
 Ce document permettra à mon mentor de comprendre l’historique des choix, l’architecture cible et la feuille de route pour la suite du projet.
+
