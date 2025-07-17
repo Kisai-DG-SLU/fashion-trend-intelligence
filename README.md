@@ -43,7 +43,7 @@ Dans ce projet, je suis chargé de la **Segmentation vestimentaire**, répartie 
 
 ## Structure du dépôt
 
-Pour l’arborescence détaillée, consultez : [project_structure.md](./project_structure.md)
+Pour l’arborescence détaillée, consultez : [project_structure.md](./docs/project_structure.md)
 
 ---
 
