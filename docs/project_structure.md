@@ -86,47 +86,51 @@ viz           = "fashion_trend_intelligence.visualization:main"
 ```
 fashion-trend-intelligence/
 ├── LICENSE
-├── README.md                    # Présentation du projet et instructions de démarrage
-├── .gitignore                   # Fichiers et dossiers ignorés par Git
-├── .env.example                 # Modèle de configuration des variables d'environnement
-├── pyproject.toml               # Configuration Poetry et metadata du projet
-├── poetry.lock                  # Verrou des versions des dépendances
+├── README.md                                  # Présentation du projet et instructions de démarrage
+├── .gitignore                                 # Fichiers et dossiers ignorés par Git
+├── .env.example                               # Modèle de configuration des variables d'environnement
+├── .python-version                            # Version Python utilisée
+├── pyproject.toml                             # Configuration Poetry et métadonnées du projet
+├── poetry.lock                                # Verrou des versions des dépendances
 │
-├── docs/                        # Documentation et supports
-│   ├── project_structure.md     # Historique et guide initial de la structure
+├── docs/                                      # Documentation et supports
 │   ├── fiche_auto_evaluation.pdf
+│   ├── project_structure.md                   # Historique et guide initial de la structure
 │   └── support_presentation_ModeTrends.pptx
 │
-├── data/                        # Données du projet
-│   ├── raw/                     # Données brutes immuables
-│   │   ├── images/              # Photos d’influenceurs
-│   │   └── annotations/         # Masks (annotations ground-truth)
-│   └── processed/               # Données transformées (à générer via scripts)
+├── data/                                      # Données du projet
+│   ├── control/                               # Données générées de contrôle pour référence après train
+│   ├── raw/                                   # Données brutes immuables
+│   │   ├── annotations/                       # Masks (annotations ground-truth)
+│   │   └── images/                            # Photos d’influenceurs
+│   └── processed/                             # Données transformées (générées via scripts)
+│       └── masks_colorized/                   # Masques segmentés générés colorisés
 │
-├── notebooks/                   # Notebooks Jupyter pour chaque étape
-│   ├── 00-viz-example.ipynb             # exemple de visualisation
-│   ├── 01_setup_env.ipynb               # configuration & test du token HF
-│   ├── 02_segmentation.ipynb            # appel API & calcul de métriques
-│   ├── 03_cost_estimation.ipynb         # estimation du coût HF
-│   └── 04_visualisation.ipynb           # visuels et analyses graphiques
+├── notebooks/                                 # Notebooks Jupyter pour chaque étape
+│   ├── 00_huggingface_api_cloth_seg.ipynb     # Exemple appel API HuggingFace pour la segmentation
+│   ├── 00_viz-example.ipynb                   # Exemple de visualisation
+│   ├── 01_setup_env.ipynb                     # Configuration & test du token HF
+│   ├── 02_segmentation.ipynb                  # Appel API & calcul de métriques
+│   ├── 03_cost_estimation.ipynb               # Estimation du coût HF
+│   └── 04_visualisation.ipynb                 # Visuels et analyses graphiques
 │
-├── src/                         # Code source du package réutilisable 
+├── src/                                       # Code source du package réutilisable
 │   └── fashion_trend_intelligence/
 │       ├── __init__.py
-│       ├── segmentation.py      # Appelle le modèle et génère les masks
-│       ├── cost_estimation.py   # Estime le coût d’inférence pour un volume d’images
-│       ├── visualization.py     # Génère et sauvegarde les visuels de segmentation
-│       ├── config.py            # Variables centralisées du Projet
-│       └── utils.py             # Fonctions (chargement des variables d'environnement)
+│       ├── config.py                          # Variables centralisées du projet
+│       ├── cost_estimation.py                 # Estimation du coût d’inférence pour un volume d’images
+│       ├── segmentation.py                    # Appelle le modèle et génère les masks
+│       ├── utils.py                           # Fonctions utilitaires (ex. chargement variables environnement)
+│       └── visualization.py                   # Génère et sauvegarde les visuels de segmentation
 │
-├── tests/                       # Tests unitaires pour chaque module
-│   ├── test_segmentation.py
+├── tests/                                     # Tests unitaires pour chaque module
 │   ├── test_cost_estimation.py
+│   ├── test_segmentation.py
 │   └── test_visualization.py
 │
-└── .github/                     # Configuration GitHub Actions
+└── .github/                                   # Configuration GitHub Actions
     └── workflows/
-        └── ci.yml               # CI: macos-latest, Python 3.13.2, Poetry, Black, flake8, pytest
+        └── ci.yml                             # CI : macos-latest, Python 3.13.2, Poetry, Black, flake8, pytest
 ```
 
 ### 2.1 Détail des choix et usages
