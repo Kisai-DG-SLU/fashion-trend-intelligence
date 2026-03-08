@@ -1,31 +1,11 @@
-.venv/
 __pycache__/
 *.pyc
 .env
-.pytest_cache/
-
-# === projet Fashion Trend Intelligence ===
-# secrets
-.env
-
-# virtualenv
-.venv/
-
-# caches et outputs
-__pycache__/
-.pytest_cache/
-
-# fichiers Mac :
+.envrc
 .DS_Store
-**/.DS_Store
-
-# données brutes et traitées (optionnel si dataset volumineux)
-# data/processed/
-# si tu ne veux pas versionner raw :
-# data/raw/
-
-# Jupyter checkpoints
-**/.ipynb_checkpoints/
-
-# docs temporaires
-docs/*.html
+.coverage
+htmlcov/
+pixi.lock
+.pixi/
+data/
+_bmad-output/
