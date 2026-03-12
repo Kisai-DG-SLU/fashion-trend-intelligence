@@ -25,7 +25,7 @@ jupyterlab = "^4.4.4"
 ipykernel  = "^6.29.5"
 pytest     = "^8.4.1"
 flake8     = "^7.3.0"
-black      = "^25.1.0"
+black      = "^26.3.1"
 pre-commit = "^4.2.0"
 
 [build-system]
