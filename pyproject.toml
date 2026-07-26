@@ -21,7 +21,7 @@ pycocotools = "^2.0"
 torch = "2.2.2"
 
 [tool.poetry.group.dev.dependencies]
-jupyterlab = "^4.4.4"
+jupyterlab = "^4.5.10"
 ipykernel  = "^6.29.5"
 pytest     = "^8.4.1"
 flake8     = "^7.3.0"
